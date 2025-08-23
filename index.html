@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tool Check-In/Out</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+</head>
+<body>
+  <h2>Tool Check-Out / Check-In</h2>
+
+  <button id="scanUserBtn">Scan User</button>
+  <p>User ID: <span id="userIdDisplay"></span></p>
+
+  <button id="scanToolBtn">Scan Tool</button>
+  <p>Tool ID: <span id="toolIdDisplay"></span></p>
+
+  <button id="checkoutBtn">Check-Out Tool</button>
+  <button id="checkinBtn">Check-In Tool</button>
+
+  <div id="qr-reader" style="width:300px"></div>
+
+  <script>
+    let userID = '';
+    let toolID = '';
+    let scanningFor = '';
+
+    const userIdDisplay = document.getElementById('userIdDisplay');
+    const toolIdDisplay = document.getElementById('toolIdDisplay');
+    const qrReaderDiv = document.getElementById('qr-reader');
+
+    const html5QrCode = new Html5Qrcode("qr-reader");
+
+    function startScanner(target) {
+      scanningFor = target;
+      html5QrCode.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        (decodedText) => {
+          if(scanningFor === 'user') {
+            userID = decodedText;
+            userIdDisplay.textContent = userID;
+          } else if(scanningFor === 'tool') {
+            toolID = decodedText;
+            toolIdDisplay.textContent = toolID;
+          }
+          html5QrCode.stop();
+        }
+      );
+    }
+
+    document.getElementById('scanUserBtn').addEventListener('click', () => startScanner('user'));
+    document.getElementById('scanToolBtn').addEventListener('click', () => startScanner('tool'));
+
+    async function postData(url = '', data = {}) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      return response.json();
+    }
+
+    document.getElementById('checkoutBtn').addEventListener('click', async () => {
+      if(userID && toolID) {
+        const result = await postData('/api/checkout', { userID, toolID });
+        alert(result.message);
+      } else {
+        alert('Scan both User and Tool QR codes first!');
+      }
+    });
+
+    document.getElementById('checkinBtn').addEventListener('click', async () => {
+      if(toolID) {
+        const result = await postData('/api/checkin', { toolID });
+        alert(result.message);
+      } else {
+        alert('Scan Tool QR code first!');
+      }
+    });
+  </script>
+</body>
+</html>
