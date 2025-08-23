@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#007bff">
+<link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h1>Admin Panel</h1>
+  <h3>Add User</h3>
+  <input type="text" id="newUserID" placeholder="User ID">
+  <input type="text" id="newUserName" placeholder="Name">
+  <button class="btn" id="addUserBtn">Add User</button>
+  <canvas id="userQRCode"></canvas>
+  <h3>Add Tool</h3>
+  <input type="text" id="newToolID" placeholder="Tool ID">
+  <input type="text" id="newToolName" placeholder="Tool Name">
+  <button class="btn" id="addToolBtn">Add Tool</button>
+  <canvas id="toolQRCode"></canvas>
+</div>
+<script src="/admin.js"></script>
+</body>
+</html>
