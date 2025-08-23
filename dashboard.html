@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#007bff">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container">
+  <h1>Tool Dashboard</h1>
+  <h3>Current Tools</h3>
+  <table id="toolsTable" border="1" style="width:100%; text-align:center;">
+    <tr><th>Tool ID</th><th>Name</th><th>Checked Out By</th></tr>
+  </table>
+  <h3>Transactions</h3>
+  <table id="transactionsTable" border="1" style="width:100%; text-align:center;">
+    <tr><th>Tool ID</th><th>User ID</th><th>Action</th><th>Time</th></tr>
+  </table>
+</div>
+<script src="/dashboard.js"></script>
+</body>
+</html>
