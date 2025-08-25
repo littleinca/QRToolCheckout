@@ -39,3 +39,71 @@ if('serviceWorker' in navigator){
       .catch(err => console.log('SW failed', err));
   });
 }
+async function loadUsers() {
+  const res = await fetch('/api/getUsers');
+  const users = await res.json();
+  const tbody = document.querySelector('#usersTable tbody');
+  tbody.innerHTML = '';
+  users.forEach(user => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${user.id}</td>
+      <td>${user.name}</td>
+      <td>${user.email}</td>
+      <td><button onclick="deleteUser(${user.id})">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function deleteUser(id) {
+  await fetch('/api/deleteUser', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  });
+  loadUsers();
+}
+
+async function loadTools() {
+  const res = await fetch('/api/getTools');
+  const tools = await res.json();
+  const tbody = document.querySelector('#toolsTable tbody');
+  tbody.innerHTML = '';
+  tools.forEach(tool => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${tool.id}</td>
+      <td>${tool.name}</td>
+      <td>
+        <input type="text" value="${tool.notes || ''}" 
+          onchange="updateTool(${tool.id}, this.value)" />
+      </td>
+      <td><button onclick="deleteTool(${tool.id})">Delete</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function deleteTool(id) {
+  await fetch('/api/deleteTool', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id })
+  });
+  loadTools();
+}
+
+async function updateTool(id, notes) {
+  await fetch('/api/updateTool', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, notes })
+  });
+}
+
+// Load on page ready
+window.onload = () => {
+  loadUsers();
+  loadTools();
+};
