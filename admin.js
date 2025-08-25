@@ -1,3 +1,7 @@
+const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
 async function postData(url = '', data = {}) {
   try {
     const response = await fetch(url, {
