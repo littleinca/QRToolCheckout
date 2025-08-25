@@ -107,3 +107,20 @@ window.onload = () => {
   loadUsers();
   loadTools();
 };
+
+function filterTable(inputId, tableId) {
+  const filter = document.getElementById(inputId).value.toLowerCase();
+  const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+  rows.forEach(row => {
+    const text = row.innerText.toLowerCase();
+    row.style.display = text.includes(filter) ? '' : 'none';
+  });
+}
+
+document.getElementById('userSearch').addEventListener('keyup', () => {
+  filterTable('userSearch', 'usersTable');
+});
+
+document.getElementById('toolSearch').addEventListener('keyup', () => {
+  filterTable('toolSearch', 'toolsTable');
+});
